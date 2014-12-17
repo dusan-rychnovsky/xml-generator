@@ -1,10 +1,10 @@
 package cz.dusanrychnovsky.xmlgenerator;
 
-public class SchemaTree {
+public class SchemaGraph {
 
 	private final String content;
 	
-	public SchemaTree(String content) {
+	public SchemaGraph(String content) {
 		this.content = content;
 	}
 	

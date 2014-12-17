@@ -15,8 +15,8 @@ PARSER_BEGIN(DTDParser)
 		}
 		
 		@Override
-		public SchemaTree parse(File schemaFile) throws IOException {
-			return new SchemaTree(FileUtils.readFileToString(schemaFile, "UTF-8").trim());
+		public SchemaGraph parse(File schemaFile) throws IOException {
+			return new SchemaGraph(FileUtils.readFileToString(schemaFile, "UTF-8").trim());
 		}
 	}
 PARSER_END(DTDParser)

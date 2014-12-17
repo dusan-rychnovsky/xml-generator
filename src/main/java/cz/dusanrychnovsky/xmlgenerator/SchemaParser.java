@@ -5,6 +5,6 @@ import java.io.IOException;
 
 public abstract class SchemaParser {
 
-	public abstract SchemaTree parse(File schemaFile) throws IOException;
+	public abstract SchemaGraph parse(File schemaFile) throws IOException;
 
 }
