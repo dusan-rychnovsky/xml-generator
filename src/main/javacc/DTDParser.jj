@@ -1,0 +1,28 @@
+options {
+	STATIC = false;
+}
+
+PARSER_BEGIN(DTDParser)
+	package cz.dusanrychnovsky.xmlgenerator;
+	
+	import org.apache.commons.io.FileUtils;
+	import java.io.IOException;
+	import java.io.File;
+	
+	public class DTDParser extends SchemaParser
+	{
+		public DTDParser() {
+		}
+		
+		@Override
+		public SchemaTree parse(File schemaFile) throws IOException {
+			return new SchemaTree(FileUtils.readFileToString(schemaFile, "UTF-8").trim());
+		}
+	}
+PARSER_END(DTDParser)
+
+SKIP : { " " }
+SKIP : { "\t" }
+SKIP : { "\n" | "\r" | "\r\n" }
+
+void Start() : {} { <EOF> }
