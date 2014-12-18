@@ -4,19 +4,29 @@ options {
 
 PARSER_BEGIN(DTDParser)
 	package cz.dusanrychnovsky.xmlgenerator;
-	
+
+    import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
+	import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraphBuilder;
+
 	import org.apache.commons.io.FileUtils;
 	import java.io.IOException;
 	import java.io.File;
+	import java.io.FileReader;
+	import java.io.StringReader;
 	
 	public class DTDParser extends SchemaParser
 	{
-		public DTDParser() {
-		}
-		
+	    private final SchemaGraphBuilder builder = new SchemaGraphBuilder();
+
+        public DTDParser() {
+            this(new StringReader(""));
+        }
+
 		@Override
-		public SchemaGraph parse(File schemaFile) throws IOException {
-			return new SchemaGraph(FileUtils.readFileToString(schemaFile, "UTF-8").trim());
+		public SchemaGraph parse(File schemaFile) throws IOException, ParseException {
+
+            ReInit(new FileReader(schemaFile));
+            return Schema();
 		}
 	}
 PARSER_END(DTDParser)
@@ -25,4 +35,37 @@ SKIP : { " " }
 SKIP : { "\t" }
 SKIP : { "\n" | "\r" | "\r\n" }
 
-void Start() : {} { <EOF> }
+TOKEN : { < EL_DECL_START : "<!ELEMENT" > }
+TOKEN : { < AT_DECL_START : "<!ATTLIST" > }
+TOKEN : { < DECL_END : ">" > }
+
+TOKEN : { < EMPTY : "EMPTY" > }
+
+TOKEN : { < CDATA : "CDATA" > }
+TOKEN : { < ID : "ID" > }
+TOKEN : { < IDREF : "IDREF" > }
+
+TOKEN : { < FLAG_REQUIRED : "#REQUIRED" > }
+TOKEN : { < FLAG_IMPLIED : "#IMPLIED" > }
+TOKEN : { < FLAG_DEFAULT : "#DEFAULT" > }
+TOKEN : { < FLAG_FIXED : "#FIXED" > }
+
+TOKEN : { < OPEN_PAR : "(" > }
+TOKEN : { < CLOSE_PAR : ")" > }
+TOKEN : { < QUOTE : "\"" > }
+TOKEN : { < COMMA : "," > }
+TOKEN : { < PIPE : "|" > }
+TOKEN : { < PLUS : "+" > }
+TOKEN : { < STAR : "*" > }
+TOKEN : { < QUESTION_MARK : "?" > }
+
+TOKEN : { < IDENTIFIER : (["a"-"z", "A"-"Z", "-", "_"])+ > }
+
+SchemaGraph Schema() : {}
+{
+    { builder.clear(); }
+
+    <EOF>
+
+    { return builder.getResult(); }
+}

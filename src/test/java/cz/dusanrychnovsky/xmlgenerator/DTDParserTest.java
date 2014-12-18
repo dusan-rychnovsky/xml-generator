@@ -11,7 +11,7 @@ import org.junit.Test;
 public class DTDParserTest
 {
     @Test
-    public void canParseASimpleDTD() throws IOException {
+    public void canParseASimpleDTD() throws IOException, ParseException {
     
     	SchemaParser parser = new DTDParser();
     	
