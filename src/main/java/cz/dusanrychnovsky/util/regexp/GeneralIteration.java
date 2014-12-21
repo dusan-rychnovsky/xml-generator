@@ -13,4 +13,9 @@ public class GeneralIteration extends Iteration {
     public GeneralIteration(int maxCard, Expression subExpr) {
         super(0, maxCard, subExpr);
     }
+    
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+    	return visitor.visit(this);
+    }
 }

@@ -1,9 +1,10 @@
 package cz.dusanrychnovsky.util.regexp;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class Sequence {
+public class Sequence extends Expression {
 
     private final List<Expression> subExprs;
 
@@ -11,7 +12,20 @@ public class Sequence {
      *
      * @param subExprs
      */
-    public Sequence(List<Expression> subExprs) {
-        this.subExprs = new ArrayList<Expression>(subExprs);
+    public Sequence(Expression... subExprs) {
+        this.subExprs = Arrays.asList(subExprs);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public List<Expression> getSubExprs() {
+    	return Collections.unmodifiableList(subExprs);
+    }
+    
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+    	return visitor.visit(this);
     }
 }
