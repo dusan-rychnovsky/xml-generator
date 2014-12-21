@@ -3,7 +3,7 @@ package cz.dusanrychnovsky.util.regexp;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class SerializerTest {
+public class SerializeRegexpTest {
 
 	@Test
 	public void canSerializeARegexp() {
@@ -24,7 +24,7 @@ public class SerializerTest {
 		
 		assertEquals(
 			"((cat|(dog,(pig){0,1},bird))){1,10}",
-			regexp.accept(new Serializer())
+			regexp.accept(new SerializeRegexp())
 		);
 	}
 

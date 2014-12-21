@@ -7,7 +7,7 @@ import static org.apache.commons.lang3.StringUtils.join;
  * @author Dušan Rychnovský
  *
  */
-public class Serializer extends Visitor<String> {
+public class SerializeRegexp extends Visitor<String> {
 
 	@Override
 	public String visit(Identifier identifier) {
