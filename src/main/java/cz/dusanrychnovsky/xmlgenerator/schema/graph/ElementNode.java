@@ -1,15 +1,32 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
+import static java.util.Arrays.asList;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class ElementNode extends SchemaGraphNode {
 	
-	private final String elementName;
+	private final String elName;
+	private final List<SequenceNode> seqNodes;
 
 	/**
 	 * 
-	 * @param elementName
+	 * @param elName
+	 * @param seqNodes
 	 */
-	public ElementNode(String elementName) {
-		this.elementName = elementName;
+	public ElementNode(String elName, SequenceNode... seqNodes) {
+		this(elName, asList(seqNodes));
+	}
+	
+	/**
+	 * 
+	 * @param elName
+	 * @param seqNodes
+	 */
+	public ElementNode(String elName, List<SequenceNode> seqNodes) {
+		this.elName = elName;
+		this.seqNodes = new ArrayList<>(seqNodes);
 	}
 	
 	@Override
@@ -20,16 +37,18 @@ public class ElementNode extends SchemaGraphNode {
 		}
 		
 		ElementNode other = (ElementNode) obj;
-		return elementName.equals(other.elementName);
+		return 
+			elName.equals(other.elName) &&
+			seqNodes.equals(other.seqNodes);
 	}
 	
 	@Override
 	public int hashCode() {
-		return elementName.hashCode();
+		return elName.hashCode() + seqNodes.hashCode();
 	}
 	
 	@Override
 	public String toString() {
-		return "e(" + elementName + ")";
+		return "e(" + elName + ")";
 	}
 }

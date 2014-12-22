@@ -59,4 +59,17 @@ public class ListUtils {
 			}
 		});
 	}
+	
+	/**
+	 * 
+	 * @param first
+	 * @param second
+	 * @return
+	 */
+	public static <T> List<T> concat(List<T> first, List<T> second) {
+		List<T> result = new ArrayList<T>();
+		result.addAll(first);
+		result.addAll(second);
+		return result;
+	}
 }

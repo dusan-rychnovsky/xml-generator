@@ -15,7 +15,7 @@ public class DTDParserTest
     
     	SchemaParser parser = new DTDParser();
     	
-    	File schemaFile = new TestResource("/schema.dtd").toFile();
+    	File schemaFile = new TestResource("/newspaper.dtd").toFile();
     	assertEquals("SchemaTree", parser.parse(schemaFile).toString());
     }
 }

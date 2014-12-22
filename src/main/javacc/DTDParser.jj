@@ -5,28 +5,33 @@ options {
 PARSER_BEGIN(DTDParser)
 	package cz.dusanrychnovsky.xmlgenerator;
 
-    import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
+	import cz.dusanrychnovsky.util.regexp.*;
+	import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
 	import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraphBuilder;
+	import cz.dusanrychnovsky.xmlgenerator.schema.graph.ElementDeclaration;
 
 	import org.apache.commons.io.FileUtils;
 	import java.io.IOException;
 	import java.io.File;
 	import java.io.FileReader;
 	import java.io.StringReader;
+	import java.util.List;
+	import java.util.ArrayList;
 	
 	public class DTDParser extends SchemaParser
 	{
-	    private final SchemaGraphBuilder builder = new SchemaGraphBuilder();
-
-        public DTDParser() {
-            this(new StringReader(""));
-        }
-
+		private final SchemaGraphBuilder builder = new SchemaGraphBuilder();
+		private final int maxCard = 3;
+		
+		public DTDParser() {
+			this(new StringReader(""));
+		}
+		
 		@Override
 		public SchemaGraph parse(File schemaFile) throws IOException, ParseException {
-
-            ReInit(new FileReader(schemaFile));
-            return Schema();
+			
+			ReInit(new FileReader(schemaFile));
+			return Schema();
 		}
 	}
 PARSER_END(DTDParser)
@@ -40,6 +45,7 @@ TOKEN : { < AT_DECL_START : "<!ATTLIST" > }
 TOKEN : { < DECL_END : ">" > }
 
 TOKEN : { < EMPTY : "EMPTY" > }
+TOKEN : { < PCDATA : "#PCDATA" > }
 
 TOKEN : { < CDATA : "CDATA" > }
 TOKEN : { < ID : "ID" > }
@@ -61,11 +67,116 @@ TOKEN : { < QUESTION_MARK : "?" > }
 
 TOKEN : { < IDENTIFIER : (["a"-"z", "A"-"Z", "-", "_"])+ > }
 
-SchemaGraph Schema() : {}
+SchemaGraph Schema() : { ElementDeclaration elDecl; }
 {
-    { builder.clear(); }
+	{ builder.clear(); }
+	
+	elDecl = ElDeclaration()
+	{ builder.addDeclaration(elDecl, true); }
+	
+	(
+		elDecl = ElDeclaration()
+		{ builder.addDeclaration(elDecl); }
+	)*
+	
+	<EOF>
+	
+	{ return builder.getResult(); }
+}
 
-    <EOF>
+ElementDeclaration ElDeclaration() : { Token t; Expression expr; }
+{
+	<EL_DECL_START>
+	
+	t = <IDENTIFIER>
+	{ String elName = t.image; }
+	
+	expr = ElContent()
+	
+	<DECL_END>
+	
+	{ return new ElementDeclaration(elName, expr); }
+}
 
-    { return builder.getResult(); }
+Expression ElContent() : { Expression expr; }
+{
+	<OPEN_PAR>
+	
+	(
+		<PCDATA>
+		{ expr = new Sequence(); }
+	|
+		expr = REGEXP()
+	)
+	
+	<CLOSE_PAR>
+	
+	{ return expr; }
+}
+
+Expression REGEXP() : { Expression result; Expression subExpr; }
+{
+	result = TERM()
+	
+	(
+		<PIPE>
+		
+		subExpr = REGEXP()
+		{ result = new Union(result, subExpr); }
+	)?
+	
+	{ return result; }
+}
+
+Expression TERM() : { Expression subExpr; }
+{
+	{ List<Expression> subExprs = new ArrayList<Expression>(); }
+	
+	(
+		subExpr = FACTOR()
+		{ subExprs.add(subExpr); }
+		
+		(
+			<COMMA>
+			
+			subExpr = FACTOR()
+			{ subExprs.add(subExpr); }
+		)*
+	)?
+	
+	{ return new Sequence(subExprs); }
+}
+
+Expression FACTOR() : { Expression result; }
+{
+	result = BASE()
+	
+	(
+		<PLUS>
+		{ result = new PositiveIteration(maxCard, result); }
+	|
+		<STAR>
+		{ result = new GeneralIteration(maxCard, result); }
+	|
+		<QUESTION_MARK>
+		{ result = new SimpleIteration(result); }
+	)?
+	
+	{ return result; }
+}
+
+Expression BASE() : { Expression result; Token t; }
+{
+	(
+		t = <IDENTIFIER>
+		{ result = new Identifier(t.image); }
+	|
+		<OPEN_PAR>
+		
+		result = REGEXP()
+		
+		<CLOSE_PAR>
+	)
+	
+	{ return result; }
 }

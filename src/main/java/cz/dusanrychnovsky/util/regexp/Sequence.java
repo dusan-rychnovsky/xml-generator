@@ -1,5 +1,6 @@
 package cz.dusanrychnovsky.util.regexp;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,15 @@ public class Sequence extends Expression {
      * @param subExprs
      */
     public Sequence(Expression... subExprs) {
-        this.subExprs = Arrays.asList(subExprs);
+        this(Arrays.asList(subExprs));
+    }
+    
+    /**
+     * 
+     * @param subExprs
+     */
+    public Sequence(List<Expression> subExprs) {
+    	this.subExprs = new ArrayList<>(subExprs);
     }
     
     /**
