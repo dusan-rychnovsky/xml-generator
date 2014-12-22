@@ -28,4 +28,31 @@ public class Sequence extends Expression {
     public <T> T accept(Visitor<T> visitor) {
     	return visitor.visit(this);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+    	
+    	if (!(obj instanceof Sequence)) {
+    		return false;
+    	}
+    	
+    	Sequence other = (Sequence) obj;
+    	
+    	if (subExprs.size() != other.subExprs.size()) {
+    		return false;
+    	}
+    	
+    	for (int i = 0; i < subExprs.size(); i++) {
+    		if (!subExprs.get(i).equals(other.subExprs.get(i))) {
+    			return false;
+    		}
+    	}
+    	
+    	return true;
+    }
+    
+    @Override
+    public int hashCode() {
+    	return subExprs.hashCode();
+    }
 }

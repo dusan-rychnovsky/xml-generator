@@ -41,4 +41,24 @@ public abstract class Iteration extends Expression {
     public Expression getSubExpr() {
     	return subExpr;
     }
+    
+
+    @Override
+    public boolean equals(Object obj) {
+    	
+    	if (!(obj instanceof Iteration)) {
+    		return false;
+    	}
+    	
+    	Iteration other = (Iteration) obj;
+    	return 
+    		subExpr.equals(other.subExpr) &&
+    		(minCard == other.minCard) &&
+    		(maxCard == other.maxCard);
+    }
+    
+    @Override
+    public int hashCode() {
+    	return subExpr.hashCode() + minCard + maxCard;
+    }
 }

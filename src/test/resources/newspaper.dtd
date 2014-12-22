@@ -1,0 +1,12 @@
+<!ELEMENT newspaper (article+)>
+<!ELEMENT article (headline, byline, lead, body, notes)>
+<!ELEMENT headline (#PCDATA)>
+<!ELEMENT byline (#PCDATA)>
+<!ELEMENT lead (#PCDATA)>
+<!ELEMENT body (#PCDATA)>
+<!ELEMENT notes (#PCDATA)> 
+
+<!ATTLIST article author CDATA #REQUIRED>
+<!ATTLIST article editor CDATA #IMPLIED>
+<!ATTLIST article date CDATA #IMPLIED>
+<!ATTLIST article edition CDATA #IMPLIED>

@@ -9,7 +9,7 @@ public class SerializeRegexpTest {
 	public void canSerializeARegexp() {
 		
 		Expression regexp = new PositiveIteration(
-			10,
+			3,
 			new Union(
 				new Identifier("cat"),
 				new Sequence(
@@ -23,7 +23,7 @@ public class SerializeRegexpTest {
 		);
 		
 		assertEquals(
-			"((cat|(dog,(pig){0,1},bird))){1,10}",
+			"((cat|(dog,(pig){0,1},bird))){1,3}",
 			regexp.accept(new SerializeRegexp())
 		);
 	}
