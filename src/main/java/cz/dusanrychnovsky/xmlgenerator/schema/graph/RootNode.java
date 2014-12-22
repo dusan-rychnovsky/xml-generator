@@ -12,8 +12,21 @@ public class RootNode extends SchemaGraphNode {
         this.childNode = childNode;
     }
 
+    /**
+     * 
+     * @return
+     */
+	public SequenceNode getChildNode() {
+		return childNode;
+	}
+	
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+    	return visitor.visit(this);
+    }
+    
     @Override
     public String toString() {
-        return "SchemaTree";
+        return "r()";
     }
 }

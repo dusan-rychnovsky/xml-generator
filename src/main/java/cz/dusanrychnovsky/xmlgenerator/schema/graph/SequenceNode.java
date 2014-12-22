@@ -2,6 +2,7 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,21 +26,20 @@ public class SequenceNode extends SchemaGraphNode {
 	public SequenceNode(List<ElementNode> childNodes) {
 		this.childNodes = new ArrayList<ElementNode>(childNodes);
 	}
-	
+
 	/**
 	 * 
-	 * @param secondNode
 	 * @return
 	 */
-	public SequenceNode concatWith(SequenceNode other) {
-		
-		List<ElementNode> childNodes = new ArrayList<ElementNode>();
-		childNodes.addAll(this.childNodes);
-		childNodes.addAll(other.childNodes);
-		
-		return new SequenceNode(childNodes);
+	public List<ElementNode> getChildNodes() {
+		return childNodes;
 	}
 	
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+    	return visitor.visit(this);
+    }
+    
 	@Override
 	public boolean equals(Object obj) {
 		

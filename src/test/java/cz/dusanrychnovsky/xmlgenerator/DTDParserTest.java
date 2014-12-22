@@ -7,6 +7,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.SerializeGraph;
+
 
 public class DTDParserTest
 {
@@ -16,6 +19,8 @@ public class DTDParserTest
     	SchemaParser parser = new DTDParser();
     	
     	File schemaFile = new TestResource("/newspaper.dtd").toFile();
-    	assertEquals("SchemaTree", parser.parse(schemaFile).toString());
+    	SchemaGraph graph = parser.parse(schemaFile);
+    	
+    	System.out.println(graph.accept(new SerializeGraph()));
     }
 }

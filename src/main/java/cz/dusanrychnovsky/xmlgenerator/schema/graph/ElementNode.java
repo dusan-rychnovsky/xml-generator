@@ -8,7 +8,7 @@ import java.util.List;
 public class ElementNode extends SchemaGraphNode {
 	
 	private final String elName;
-	private final List<SequenceNode> seqNodes;
+	private final List<SequenceNode> childNodes;
 
 	/**
 	 * 
@@ -26,9 +26,30 @@ public class ElementNode extends SchemaGraphNode {
 	 */
 	public ElementNode(String elName, List<SequenceNode> seqNodes) {
 		this.elName = elName;
-		this.seqNodes = new ArrayList<>(seqNodes);
+		this.childNodes = new ArrayList<>(seqNodes);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getElName() {
+		return elName;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<SequenceNode> getChildNodes() {
+		return childNodes;
+	}
+	
+    @Override
+    public <T> T accept(Visitor<T> visitor) {
+    	return visitor.visit(this);
+    }
+    
 	@Override
 	public boolean equals(Object obj) {
 		
@@ -39,12 +60,12 @@ public class ElementNode extends SchemaGraphNode {
 		ElementNode other = (ElementNode) obj;
 		return 
 			elName.equals(other.elName) &&
-			seqNodes.equals(other.seqNodes);
+			childNodes.equals(other.childNodes);
 	}
 	
 	@Override
 	public int hashCode() {
-		return elName.hashCode() + seqNodes.hashCode();
+		return elName.hashCode() + childNodes.hashCode();
 	}
 	
 	@Override
