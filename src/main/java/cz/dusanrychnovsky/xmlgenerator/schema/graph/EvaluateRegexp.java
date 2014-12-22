@@ -3,6 +3,7 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 import cz.dusanrychnovsky.util.regexp.*;
 import static cz.dusanrychnovsky.util.ListUtils.*;
 import static java.util.Arrays.asList;
+import static java.util.Collections.nCopies;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +24,9 @@ public class EvaluateRegexp extends Visitor<List<SequenceNode>> {
 
 	@Override
 	public List<SequenceNode> visit(Sequence sequence) {
-		
-		List<SequenceNode> initial = new ArrayList<SequenceNode>();
-		initial.add(new SequenceNode());
-		
-		return fold(
-			visit(sequence.getSubExprs()),
-			initial,
-			new Product()
-		);
+		return visit(sequence.getSubExprs())
+			.stream()
+			.reduce(asList(new SequenceNode()), (a, v) -> getProduct(a, v));
 	}
 
 	@Override
@@ -39,45 +34,37 @@ public class EvaluateRegexp extends Visitor<List<SequenceNode>> {
 		
 		List<SequenceNode> subResult = iteration.getSubExpr().accept(this);
 
-		List<SequenceNode> initial = new ArrayList<SequenceNode>();
-		initial.add(new SequenceNode());
-		
 		List<List<SequenceNode>> cards = new ArrayList<List<SequenceNode>>();
 		for (int c = iteration.getMinCard(); c <= iteration.getMaxCard(); c++) {
 			cards.add(
-				fold(
-					times(subResult, c),
-					initial,
-					new Product()
-				)
+				nCopies(c, subResult)
+					.stream()
+					.reduce(asList(new SequenceNode()), (a, v) -> getProduct(a, v))
 			);
 		}
 		
 		return concat(cards);
 	}
 
-	private static class Product implements Reduce<List<SequenceNode>> {
-
-		public List<SequenceNode> eval(List<SequenceNode> first, List<SequenceNode> second) {
+	private List<SequenceNode> getProduct(List<SequenceNode> first, List<SequenceNode> second) {
 			
-			if (first.isEmpty()) {
-				first.add(new SequenceNode());
-			}
-			
-			if (second.isEmpty()) {
-				second.add(new SequenceNode());
-			}
-			
-			List<SequenceNode> result = new ArrayList<SequenceNode>();
-			
-			for (SequenceNode firstNode : first) {
-				for (SequenceNode secondNode : second) {
-					result.add(firstNode.concatWith(secondNode));
-				}
-			}
-			
-			return result;
+		if (first.isEmpty()) {
+			first.add(new SequenceNode());
 		}
+		
+		if (second.isEmpty()) {
+			second.add(new SequenceNode());
+		}
+		
+		List<SequenceNode> result = new ArrayList<SequenceNode>();
+		
+		for (SequenceNode firstNode : first) {
+			for (SequenceNode secondNode : second) {
+				result.add(firstNode.concatWith(secondNode));
+			}
+		}
+		
+		return result;
 		
 	}
 }

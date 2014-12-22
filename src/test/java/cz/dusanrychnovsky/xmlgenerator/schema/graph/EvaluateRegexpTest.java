@@ -1,9 +1,9 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
-import static cz.dusanrychnovsky.util.ListUtils.*;
 import cz.dusanrychnovsky.util.regexp.*;
 
 import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.*;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -55,13 +55,10 @@ public class EvaluateRegexpTest {
 	 */
 	private SequenceNode sequenceNode(String... elementNames) {
 		return new SequenceNode(
-			map(
-				asList(elementNames),
-				new Map<String, ElementNode>() {
-					public ElementNode eval(String item) {
-						return new ElementNode(item);
-					}
-				}
+			asList(elementNames)
+				.stream()
+				.map(ElementNode::new)
+				.collect(toList()
 			)
 		);
 	}
