@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.toList;
+import static cz.dusanrychnovsky.util.ListUtils.map;
 import cz.dusanrychnovsky.util.regexp.EvaluateRegexp;
 import cz.dusanrychnovsky.util.regexp.Expression;
 import cz.dusanrychnovsky.util.regexp.Language;
@@ -103,9 +103,10 @@ public class SchemaGraphBuilder {
 		for (Word word : language.getWords()) {
 			result.add(
 				new SequenceNode(
-					word.getSymbols().stream()
-						.map(s -> buildElementNode(s))
-						.collect(toList())
+					map(
+						word.getSymbols(),
+						s -> buildElementNode(s)
+					)
 				)
 			);
 		}
