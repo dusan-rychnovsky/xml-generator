@@ -2,22 +2,22 @@ package cz.dusanrychnovsky.util.regexp;
 
 public class Identifier extends Expression {
 
-    private final String token;
+    private final String symbol;
 
     /**
      *
-     * @param token
+     * @param symbol
      */
-    public Identifier(String token) {
-        this.token = token;
+    public Identifier(String symbol) {
+        this.symbol = symbol;
     }
     
     /**
      * 
      * @return
      */
-	public String getToken() {
-		return token;
+	public String getSymbol() {
+		return symbol;
 	}
 
     @Override
@@ -33,11 +33,11 @@ public class Identifier extends Expression {
     	}
     	
     	Identifier other = (Identifier) obj;
-    	return token.equals(other.token);
+    	return symbol.equals(other.symbol);
     }
     
     @Override
     public int hashCode() {
-    	return token.hashCode();
+    	return symbol.hashCode();
     }
 }

@@ -1,20 +1,20 @@
 package cz.dusanrychnovsky.util.regexp;
 
-public abstract class Iteration extends Expression {
+public class Iteration extends Expression {
 
-    private final int minCard;
-    private final int maxCard;
+    private final int min;
+    private final int max;
     private final Expression subExpr;
 
     /**
      *
-     * @param minCard
-     * @param maxCard
+     * @param min
+     * @param max
      * @param subExpr
      */
-    public Iteration(int minCard, int maxCard, Expression subExpr) {
-        this.minCard = minCard;
-        this.maxCard = maxCard;
+    public Iteration(int min, int max, Expression subExpr) {
+        this.min = min;
+        this.max = max;
         this.subExpr = subExpr;
     }
     
@@ -22,16 +22,16 @@ public abstract class Iteration extends Expression {
      * 
      * @return
      */
-    public int getMinCard() {
-    	return minCard;
+    public int getMin() {
+    	return min;
     }
     
     /**
      * 
      * @return
      */
-    public int getMaxCard() {
-    	return maxCard;
+    public int getMax() {
+    	return max;
     }
     
     /**
@@ -42,7 +42,11 @@ public abstract class Iteration extends Expression {
     	return subExpr;
     }
     
-
+	@Override
+	public <T> T accept(Visitor<T> visitor) {
+		return visitor.visit(this);
+	}
+	
     @Override
     public boolean equals(Object obj) {
     	
@@ -53,12 +57,12 @@ public abstract class Iteration extends Expression {
     	Iteration other = (Iteration) obj;
     	return 
     		subExpr.equals(other.subExpr) &&
-    		(minCard == other.minCard) &&
-    		(maxCard == other.maxCard);
+    		(min == other.min) &&
+    		(max == other.max);
     }
     
     @Override
     public int hashCode() {
-    	return subExpr.hashCode() + minCard + maxCard;
+    	return subExpr.hashCode() + min + max;
     }
 }

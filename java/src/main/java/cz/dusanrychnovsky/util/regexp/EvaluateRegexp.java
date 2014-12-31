@@ -1,67 +1,37 @@
 package cz.dusanrychnovsky.util.regexp;
 
-import static cz.dusanrychnovsky.util.ListUtils.*;
-import static java.util.Arrays.asList;
 import static java.util.Collections.nCopies;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EvaluateRegexp extends Visitor<List<List<String>>> {
+public class EvaluateRegexp extends Visitor<Language> {
 
 	@Override
-	public List<List<String>> visit(Identifier identifier) {
-		return asList(asList(identifier.getToken()));
+	public Language visit(Identifier identifier) {
+		return new Language(new Word(identifier.getSymbol()));
 	}
 
 	@Override
-	public List<List<String>> visit(Union union) {
-		return concat(visit(union.getSubExprs()));
+	public Language visit(Union union) {
+		return Language.union(visit(union.getSubExprs()));
 	}
 
 	@Override
-	public List<List<String>> visit(Sequence sequence) {
-		return visit(sequence.getSubExprs())
-			.stream()
-			.reduce(asList(new ArrayList<String>()), (a, v) -> getProduct(a, v));
+	public Language visit(Sequence sequence) {
+		return Language.concat(visit(sequence.getSubExprs()));
 	}
 
 	@Override
-	public List<List<String>> visit(Iteration iteration) {
+	public Language visit(Iteration iteration) {
 		
-		List<List<String>> subResult = iteration.getSubExpr().accept(this);
+		Language subResult = iteration.getSubExpr().accept(this);
 
-		List<List<List<String>>> cards = new ArrayList<List<List<String>>>();
-		for (int c = iteration.getMinCard(); c <= iteration.getMaxCard(); c++) {
-			cards.add(
-				nCopies(c, subResult)
-					.stream()
-					.reduce(asList(new ArrayList<String>()), (a, v) -> getProduct(a, v))
-			);
+		List<Language> languages = new ArrayList<Language>();
+		for (int c = iteration.getMin(); c <= iteration.getMax(); c++) {
+			languages.add(Language.concat(nCopies(c, subResult)));
 		}
 		
-		return concat(cards);
-	}
-
-	private List<List<String>> getProduct(List<List<String>> first, List<List<String>> second) {
-			
-		if (first.isEmpty()) {
-			first.add(new ArrayList<String>());
-		}
-		
-		if (second.isEmpty()) {
-			second.add(new ArrayList<String>());
-		}
-		
-		List<List<String>> result = new ArrayList<List<String>>();
-		
-		for (List<String> firstNode : first) {
-			for (List<String> secondNode : second) {
-				result.add(concat(firstNode, secondNode));
-			}
-		}
-		
-		return result;
-		
+		return Language.union(languages);
 	}
 }

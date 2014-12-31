@@ -11,7 +11,7 @@ public class SerializeRegexp extends Visitor<String> {
 
 	@Override
 	public String visit(Identifier identifier) {
-		return identifier.getToken();
+		return identifier.getSymbol();
 	}
 
 	@Override
@@ -32,9 +32,9 @@ public class SerializeRegexp extends Visitor<String> {
 		builder.append(iteration.getSubExpr().accept(this));
 		builder.append(")");
 		builder.append("{");
-		builder.append(iteration.getMinCard());
+		builder.append(iteration.getMin());
 		builder.append(",");
-		builder.append(iteration.getMaxCard());
+		builder.append(iteration.getMax());
 		builder.append("}");
 		
 		return builder.toString();

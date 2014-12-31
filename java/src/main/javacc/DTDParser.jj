@@ -153,13 +153,13 @@ Expression FACTOR() : { Expression result; }
 	
 	(
 		<PLUS>
-		{ result = new PositiveIteration(maxCard, result); }
+		{ result = new Iteration(1, maxCard, result); }
 	|
 		<STAR>
-		{ result = new GeneralIteration(maxCard, result); }
+		{ result = new Iteration(0, maxCard, result); }
 	|
 		<QUESTION_MARK>
-		{ result = new SimpleIteration(result); }
+		{ result = new Iteration(0, 1, result); }
 	)?
 	
 	{ return result; }

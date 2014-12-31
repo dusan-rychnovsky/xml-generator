@@ -8,6 +8,8 @@ import java.util.Map;
 import static java.util.stream.Collectors.toList;
 import cz.dusanrychnovsky.util.regexp.EvaluateRegexp;
 import cz.dusanrychnovsky.util.regexp.Expression;
+import cz.dusanrychnovsky.util.regexp.Language;
+import cz.dusanrychnovsky.util.regexp.Word;
 
 public class SchemaGraphBuilder {
 
@@ -97,11 +99,11 @@ public class SchemaGraphBuilder {
 		
 		List<SequenceNode> result = new ArrayList<SequenceNode>();
 		
-		List<List<String>> sequences = expr.accept(evaluate);
-		for (List<String> sequence : sequences) {
+		Language language = expr.accept(evaluate);
+		for (Word word : language.getWords()) {
 			result.add(
 				new SequenceNode(
-					sequence.stream()
+					word.getSymbols().stream()
 						.map(s -> buildElementNode(s))
 						.collect(toList())
 				)

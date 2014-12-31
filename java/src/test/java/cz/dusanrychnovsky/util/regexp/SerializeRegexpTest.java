@@ -8,15 +8,13 @@ public class SerializeRegexpTest {
 	@Test
 	public void canSerializeARegexp() {
 		
-		Expression regexp = new PositiveIteration(
-			3,
+		Expression regexp = new Iteration(
+			1, 3,
 			new Union(
 				new Identifier("cat"),
 				new Sequence(
 					new Identifier("dog"),
-					new SimpleIteration(
-						new Identifier("pig")
-					),
+					new Iteration(0, 1, new Identifier("pig")),
 					new Identifier("bird")
 				)
 			)
