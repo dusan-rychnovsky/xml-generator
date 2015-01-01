@@ -214,6 +214,7 @@ boolean required() : { Token t; }
 		<FLAG_IMPLIED>
 		{ return false; }
 	|
+		// TODO: there's likely no such keyword in DTD (i.e. #DEFAULT)
 		<FLAG_DEFAULT>
 		<QUOTE>
 		t = <IDENTIFIER>

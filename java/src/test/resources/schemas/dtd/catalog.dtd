@@ -1,0 +1,29 @@
+<!ELEMENT catalog (product+)>
+
+<!ELEMENT product (options?,price+,notes?)>
+<!ATTLIST product 
+	name CDATA #IMPLIED
+	category CDATA #IMPLIED
+	partnum CDATA #IMPLIED
+	plant CDATA #IMPLIED
+	inventory CDATA #IMPLIED>
+
+<!ELEMENT specifications (#PCDATA)>
+<!ATTLIST specifications
+	weight CDATA #IMPLIED
+	power CDATA #IMPLIED>
+
+<!ELEMENT options (#PCDATA)>
+<!ATTLIST options
+	finish CDATA #IMPLIED
+	adapter CDATA #IMPLIED
+	case CDATA #IMPLIED>
+
+<!ELEMENT price (#PCDATA)>
+<!ATTLIST price
+	msrp CDATA #IMPLIED
+	wholesale CDATA #IMPLIED
+	street CDATA #IMPLIED
+	shipping CDATA #IMPLIED>
+
+<!ELEMENT notes (#PCDATA)>
