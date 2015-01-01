@@ -3,6 +3,7 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 import java.util.List;
 import java.util.Random;
 
+import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 
@@ -47,7 +48,21 @@ public class RandomGenerator extends DocumentGenerator {
 			result.addContent(buildElement(subElNode));
 		}
 		
+		AttributesSetNode rndAttrSetNode = rndItem(elNode.getAttributesSetNodes(), rnd);
+		for (AttributeNode attrNode : rndAttrSetNode.getChildNodes()) {
+			result.getAttributes().add(buildAttribute(attrNode));
+		}
+		
 		return result;
+	}
+	
+	/**
+	 * 
+	 * @param attrNode
+	 * @return
+	 */
+	private Attribute buildAttribute(AttributeNode attrNode) {
+		return new Attribute(attrNode.getAttrName(), "");
 	}
 	
 	/**

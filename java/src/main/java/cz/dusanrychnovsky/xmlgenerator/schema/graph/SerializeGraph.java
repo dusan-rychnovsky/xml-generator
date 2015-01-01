@@ -37,9 +37,7 @@ public class SerializeGraph extends Visitor<String> {
 
 	@Override
 	public String visit(AttributeNode attrNode) {
-		throw new UnsupportedOperationException(
-			"Attribute notes are not supported yet."
-		);
+		return "a(" + attrNode.getAttrName() + ")";
 	}
 
 	@Override
@@ -50,6 +48,17 @@ public class SerializeGraph extends Visitor<String> {
 		List<SchemaGraphNode> childNodes = new ArrayList<>();
 		childNodes.addAll(seqNode.getChildNodes());
 		
-		return "s(" + join(visit(childNodes), ", ") + ")";
+		return "els(" + join(visit(childNodes), ", ") + ")";
+	}
+
+	@Override
+	public String visit(AttributesSetNode attrSetNode) {
+
+		// apparently, Java does not allow to convert a List<V> to List<U>
+		// even when V extends U
+		List<SchemaGraphNode> childNodes = new ArrayList<>();
+		childNodes.addAll(attrSetNode.getChildNodes());
+		
+		return "attrs(" + join(visit(childNodes), ", ") + ")";
 	}
 }

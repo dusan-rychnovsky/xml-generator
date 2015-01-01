@@ -42,6 +42,13 @@ public abstract class Visitor<T> {
 	
 	/**
 	 * 
+	 * @param attrSetNode
+	 * @return
+	 */
+	public abstract T visit(AttributesSetNode attrSetNode);
+	
+	/**
+	 * 
 	 * @param nodes
 	 * @return
 	 */

@@ -1,31 +1,27 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
-import static java.util.Arrays.asList;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ElementNode extends SchemaGraphNode {
 	
 	private final String elName;
+	private final List<AttributesSetNode> attrSetNodes;
 	private final List<SequenceNode> childNodes;
-
-	/**
-	 * 
-	 * @param elName
-	 * @param seqNodes
-	 */
-	public ElementNode(String elName, SequenceNode... seqNodes) {
-		this(elName, asList(seqNodes));
-	}
 	
 	/**
 	 * 
 	 * @param elName
+	 * @param attrSetNodes
 	 * @param seqNodes
 	 */
-	public ElementNode(String elName, List<SequenceNode> seqNodes) {
+	public ElementNode(
+		String elName, 
+		List<AttributesSetNode> attrSetNodes, 
+		List<SequenceNode> seqNodes) {
+		
 		this.elName = elName;
+		this.attrSetNodes = new ArrayList<>(attrSetNodes);
 		this.childNodes = new ArrayList<>(seqNodes);
 	}
 
@@ -35,6 +31,14 @@ public class ElementNode extends SchemaGraphNode {
 	 */
 	public String getElName() {
 		return elName;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<AttributesSetNode> getAttributesSetNodes() {
+		return attrSetNodes;
 	}
 	
 	/**

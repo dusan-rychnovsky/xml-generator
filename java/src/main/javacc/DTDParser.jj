@@ -6,9 +6,7 @@ PARSER_BEGIN(DTDParser)
 	package cz.dusanrychnovsky.xmlgenerator;
 
 	import cz.dusanrychnovsky.util.regexp.*;
-	import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
-	import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraphBuilder;
-	import cz.dusanrychnovsky.xmlgenerator.schema.graph.ElementDeclaration;
+	import cz.dusanrychnovsky.xmlgenerator.schema.graph.*;
 
 	import org.apache.commons.io.FileUtils;
 	import java.io.IOException;
@@ -67,16 +65,18 @@ TOKEN : { < QUESTION_MARK : "?" > }
 
 TOKEN : { < IDENTIFIER : (["a"-"z", "A"-"Z", "-", "_"])+ > }
 
-SchemaGraph Schema() : { ElementDeclaration elDecl; }
+SchemaGraph Schema() : { ElementDeclaration elDecl; List<AttributeDeclaration> attDecls; }
 {
+	{ boolean rootEl = true; }
 	{ builder.clear(); }
-	
-	elDecl = ElDeclaration()
-	{ builder.addDeclaration(elDecl, true); }
 	
 	(
 		elDecl = ElDeclaration()
-		{ builder.addDeclaration(elDecl); }
+		{ builder.addDeclaration(elDecl, rootEl); }
+		{ rootEl = false; }
+	|
+		attDecls = AttlistDeclaration()
+		{ builder.addDeclarations(attDecls); }
 	)*
 	
 	<EOF>
@@ -179,4 +179,52 @@ Expression BASE() : { Expression result; Token t; }
 	)
 	
 	{ return result; }
+}
+
+List<AttributeDeclaration> AttlistDeclaration() : { Token t; boolean required; }
+{
+	{ List<AttributeDeclaration> result = new ArrayList<AttributeDeclaration>(); }
+	
+	<AT_DECL_START>
+	
+	t = <IDENTIFIER>
+	{ String elName = t.image; }
+	
+	(
+		t = <IDENTIFIER>
+		{ String attrName = t.image; }
+		
+		<CDATA>	
+		required = required()
+		
+		{ result.add(new AttributeDeclaration(elName, attrName, required)); }
+	)+
+	
+	<DECL_END>
+	
+	{ return result; }
+}
+
+boolean required() : { Token t; }
+{
+	(
+		<FLAG_REQUIRED>
+		{ return true; }
+	|
+		<FLAG_IMPLIED>
+		{ return false; }
+	|
+		<FLAG_DEFAULT>
+		<QUOTE>
+		t = <IDENTIFIER>
+		<QUOTE>
+		{ return false; }
+	|
+		<FLAG_FIXED>
+		
+		<QUOTE>
+		t = <IDENTIFIER>
+		<QUOTE>
+		{ return false; }
+	)
 }
