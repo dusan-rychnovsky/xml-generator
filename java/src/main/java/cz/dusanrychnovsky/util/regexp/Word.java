@@ -28,7 +28,7 @@ public class Word {
 	 * @param symbols
 	 */
 	public Word(List<String> symbols) {
-		this.symbols = new ArrayList<String>(symbols);
+		this.symbols = new ArrayList<>(symbols);
 	}
 	
 	/**

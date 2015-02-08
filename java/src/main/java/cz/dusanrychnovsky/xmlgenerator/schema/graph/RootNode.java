@@ -9,13 +9,13 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 public class RootNode extends SchemaGraphNode {
 
     private final SequenceNode<ElementNode> childNode;
-
+    
     /**
-     *
-     * @param childNode
+     * 
+     * @param rootElNode
      */
-    public RootNode(SequenceNode<ElementNode> childNode) {
-        this.childNode = childNode;
+    public RootNode(ElementNode rootElNode) {
+    	this.childNode = new SequenceNode<>(rootElNode);
     }
 
     /**

@@ -21,6 +21,11 @@ import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
 import cz.dusanrychnovsky.xmlgenerator.schema.graph.SequenceNode;
 import cz.dusanrychnovsky.xmlgenerator.schema.graph.SetNode;
 
+/**
+ * 
+ * @author Dušan Rychnovský
+ *
+ */
 public class SchemaGraphBuilder {
 
 	private final EvaluateRegexp evaluate = new EvaluateRegexp();
@@ -112,7 +117,7 @@ public class SchemaGraphBuilder {
         }
         
         ElementNode rootElNode = buildElementNode(rootElName);
-        RootNode rootNode = new RootNode(new SequenceNode<>(rootElNode));
+        RootNode rootNode = new RootNode(rootElNode);
         
         return new SchemaGraph(rootNode);
     }
@@ -150,14 +155,14 @@ public class SchemaGraphBuilder {
 		return fold(
 			attrDecls,
 			Arrays.asList(new SetNode<>()),
-			(acc, attr) -> {
+			(acc, attrDecl) -> {
 				
 				List<SetNode<AttributeNode>> result = new ArrayList<>();
-				AttributeNode attrNode = new AttributeNode(attr.getAttrName());
+				AttributeNode attrNode = new AttributeNode(attrDecl.getAttrName());
 				
 				for (SetNode<AttributeNode> item : acc) {
 					
-					if (!attr.isRequired()) {
+					if (!attrDecl.isRequired()) {
 						result.add(item);
 					}
 					
