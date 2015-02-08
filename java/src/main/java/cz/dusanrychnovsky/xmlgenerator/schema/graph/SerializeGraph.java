@@ -41,7 +41,7 @@ public class SerializeGraph extends Visitor<String> {
 	}
 
 	@Override
-	public String visit(SequenceNode seqNode) {
+	public String visit(SequenceNode<? extends SchemaGraphNode> seqNode) {
 
 		// apparently, Java does not allow to convert a List<V> to List<U>
 		// even when V extends U
@@ -52,7 +52,7 @@ public class SerializeGraph extends Visitor<String> {
 	}
 
 	@Override
-	public String visit(AttributesSetNode attrSetNode) {
+	public String visit(SetNode<? extends SchemaGraphNode> attrSetNode) {
 
 		// apparently, Java does not allow to convert a List<V> to List<U>
 		// even when V extends U

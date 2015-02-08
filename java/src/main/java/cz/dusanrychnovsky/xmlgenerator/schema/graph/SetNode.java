@@ -6,15 +6,15 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class AttributesSetNode extends SchemaGraphNode {
+public class SetNode<T extends SchemaGraphNode> extends SchemaGraphNode {
 	
-	private final List<AttributeNode> childNodes;
+	private final List<T> childNodes;
 	
 	/**
 	 * 
 	 * @param childNodes
 	 */
-	public AttributesSetNode(AttributeNode... childNodes) {
+	public SetNode(T... childNodes) {
 		this(Arrays.asList(childNodes));
 	}
 	
@@ -22,15 +22,15 @@ public class AttributesSetNode extends SchemaGraphNode {
 	 * 
 	 * @param childNodes
 	 */
-	public AttributesSetNode(List<AttributeNode> childNodes) {
-		this.childNodes = new ArrayList<AttributeNode>(childNodes);
+	public SetNode(List<T> childNodes) {
+		this.childNodes = new ArrayList<>(childNodes);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public List<AttributeNode> getChildNodes() {
+	public List<T> getChildNodes() {
 		return childNodes;
 	}
 	
@@ -42,11 +42,11 @@ public class AttributesSetNode extends SchemaGraphNode {
 	@Override
 	public boolean equals(Object obj) {
 		
-		if (!(obj instanceof AttributesSetNode)) {
+		if (!(obj instanceof SetNode)) {
 			return false;
 		}
 		
-		AttributesSetNode other = (AttributesSetNode) obj;
+		SetNode<T> other = (SetNode<T>) obj;
 		return childNodes.equals(other.childNodes);
 	}
 	

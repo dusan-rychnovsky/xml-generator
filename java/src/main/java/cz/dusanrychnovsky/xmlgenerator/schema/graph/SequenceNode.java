@@ -2,20 +2,19 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class SequenceNode extends SchemaGraphNode {
+public class SequenceNode<T extends SchemaGraphNode> extends SchemaGraphNode {
 	
-	private final List<ElementNode> childNodes;
+	private final List<T> childNodes;
 	
 	/**
 	 * 
 	 * @param childNodes
 	 */
-	public SequenceNode(ElementNode... childNodes) {
+	public SequenceNode(T... childNodes) {
 		this(Arrays.asList(childNodes));
 	}
 	
@@ -23,15 +22,15 @@ public class SequenceNode extends SchemaGraphNode {
 	 * 
 	 * @param childNodes
 	 */
-	public SequenceNode(List<ElementNode> childNodes) {
-		this.childNodes = new ArrayList<ElementNode>(childNodes);
+	public SequenceNode(List<T> childNodes) {
+		this.childNodes = new ArrayList<T>(childNodes);
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public List<ElementNode> getChildNodes() {
+	public List<T> getChildNodes() {
 		return childNodes;
 	}
 	
@@ -43,11 +42,11 @@ public class SequenceNode extends SchemaGraphNode {
 	@Override
 	public boolean equals(Object obj) {
 		
-		if (!(obj instanceof SequenceNode)) {
+		if (!(obj instanceof SequenceNode<?>)) {
 			return false;
 		}
 		
-		SequenceNode other = (SequenceNode) obj;
+		SequenceNode<T> other = (SequenceNode<T>) obj;
 		return childNodes.equals(other.childNodes);
 	}
 	

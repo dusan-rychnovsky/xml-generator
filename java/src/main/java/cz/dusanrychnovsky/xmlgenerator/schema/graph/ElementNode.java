@@ -6,8 +6,8 @@ import java.util.List;
 public class ElementNode extends SchemaGraphNode {
 	
 	private final String elName;
-	private final List<AttributesSetNode> attrSetNodes;
-	private final List<SequenceNode> childNodes;
+	private final List<SetNode<AttributeNode>> attrSetNodes;
+	private final List<SequenceNode<ElementNode>> childNodes;
 	
 	/**
 	 * 
@@ -17,8 +17,8 @@ public class ElementNode extends SchemaGraphNode {
 	 */
 	public ElementNode(
 		String elName, 
-		List<AttributesSetNode> attrSetNodes, 
-		List<SequenceNode> seqNodes) {
+		List<SetNode<AttributeNode>> attrSetNodes, 
+		List<SequenceNode<ElementNode>> seqNodes) {
 		
 		this.elName = elName;
 		this.attrSetNodes = new ArrayList<>(attrSetNodes);
@@ -37,7 +37,7 @@ public class ElementNode extends SchemaGraphNode {
 	 * 
 	 * @return
 	 */
-	public List<AttributesSetNode> getAttributesSetNodes() {
+	public List<SetNode<AttributeNode>> getAttributesSetNodes() {
 		return attrSetNodes;
 	}
 	
@@ -45,7 +45,7 @@ public class ElementNode extends SchemaGraphNode {
 	 * 
 	 * @return
 	 */
-	public List<SequenceNode> getChildNodes() {
+	public List<SequenceNode<ElementNode>> getChildNodes() {
 		return childNodes;
 	}
 	

@@ -28,7 +28,7 @@ public class RandomDTDCompliantDocumentsGeneratingTest
 	private final SchemaParser parser = new DTDParser();
 	private final Validator validator = new DTDValidator();
 	
-	private final XMLOutputter outputter = new XMLOutputter(getPrettyFormat());
+	// private final XMLOutputter outputter = new XMLOutputter(getPrettyFormat());
 	
     @Test
     public void canGenerateCompliantDocuments() throws IOException, ParseException {

@@ -11,7 +11,6 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.input.sax.XMLReaders;
 import org.jdom2.output.XMLOutputter;
-import org.xml.sax.XMLReader;
 
 public class DTDValidator extends Validator {
 	

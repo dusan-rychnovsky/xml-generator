@@ -106,7 +106,7 @@ public class SchemaGraphBuilder {
         }
         
         ElementNode rootElNode = buildElementNode(rootElName);
-        RootNode rootNode = new RootNode(new SequenceNode(rootElNode));
+        RootNode rootNode = new RootNode(new SequenceNode<>(rootElNode));
         
         return new SchemaGraph(rootNode);
     }
@@ -125,10 +125,10 @@ public class SchemaGraphBuilder {
 		}
 		
 		ElementDeclaration elDecl = elDecls.get(elName);
-		List<SequenceNode> seqNodes = buildSequenceNodes(elDecl);
+		List<SequenceNode<ElementNode>> seqNodes = buildSequenceNodes(elDecl);
 		
 		List<AttributeDeclaration> attrDecls = getAttrDeclarations(elName);
-		List<AttributesSetNode> attrSetNodes = buildAttrSetNodes(attrDecls);
+		List<SetNode<AttributeNode>> attrSetNodes = buildAttrSetNodes(attrDecls);
 		
 		return new ElementNode(elName, attrSetNodes, seqNodes);
 	}
@@ -138,18 +138,18 @@ public class SchemaGraphBuilder {
 	 * @param attrDecls
 	 * @return
 	 */
-	private List<AttributesSetNode> buildAttrSetNodes(
+	private List<SetNode<AttributeNode>> buildAttrSetNodes(
 		List<AttributeDeclaration> attrDecls) {
 		
 		return fold(
 			attrDecls,
-			Arrays.asList(new AttributesSetNode()),
+			Arrays.asList(new SetNode<>()),
 			(acc, attr) -> {
 				
-				List<AttributesSetNode> result = new ArrayList<>();
+				List<SetNode<AttributeNode>> result = new ArrayList<>();
 				AttributeNode attrNode = new AttributeNode(attr.getAttrName());
 				
-				for (AttributesSetNode item : acc) {
+				for (SetNode<AttributeNode> item : acc) {
 					
 					if (!attr.isRequired()) {
 						result.add(item);
@@ -159,7 +159,7 @@ public class SchemaGraphBuilder {
 					nodes.addAll(item.getChildNodes());
 					nodes.add(attrNode);
 					
-					result.add(new AttributesSetNode(nodes));
+					result.add(new SetNode<AttributeNode>(nodes));
 				}
 				
 				return result;
@@ -172,14 +172,14 @@ public class SchemaGraphBuilder {
 	 * @param elDecl.getExpr()
 	 * @return
 	 */
-	private List<SequenceNode> buildSequenceNodes(ElementDeclaration elDecl) {
+	private List<SequenceNode<ElementNode>> buildSequenceNodes(ElementDeclaration elDecl) {
 		
-		List<SequenceNode> result = new ArrayList<SequenceNode>();
+		List<SequenceNode<ElementNode>> result = new ArrayList<>();
 		
 		Language language = elDecl.getExpr().accept(evaluate);
 		for (Word word : language.getWords()) {
 			result.add(
-				new SequenceNode(
+				new SequenceNode<>(
 					map(
 						word.getSymbols(),
 						s -> buildElementNode(s)
