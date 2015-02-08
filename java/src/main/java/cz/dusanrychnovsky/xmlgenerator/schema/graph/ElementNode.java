@@ -3,26 +3,32 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents an element node in a schema graph.
+ * 
+ * @author Dušan Rychnovský
+ *
+ */
 public class ElementNode extends SchemaGraphNode {
 	
 	private final String elName;
 	private final List<SetNode<AttributeNode>> attrSetNodes;
-	private final List<SequenceNode<ElementNode>> childNodes;
+	private final List<SequenceNode<ElementNode>> elSeqNodes;
 	
 	/**
 	 * 
 	 * @param elName
 	 * @param attrSetNodes
-	 * @param seqNodes
+	 * @param elSeqNodes
 	 */
 	public ElementNode(
 		String elName, 
 		List<SetNode<AttributeNode>> attrSetNodes, 
-		List<SequenceNode<ElementNode>> seqNodes) {
+		List<SequenceNode<ElementNode>> elSeqNodes) {
 		
 		this.elName = elName;
 		this.attrSetNodes = new ArrayList<>(attrSetNodes);
-		this.childNodes = new ArrayList<>(seqNodes);
+		this.elSeqNodes = new ArrayList<>(elSeqNodes);
 	}
 
 	/**
@@ -37,7 +43,7 @@ public class ElementNode extends SchemaGraphNode {
 	 * 
 	 * @return
 	 */
-	public List<SetNode<AttributeNode>> getAttributesSetNodes() {
+	public List<SetNode<AttributeNode>> getAttrSetNodes() {
 		return attrSetNodes;
 	}
 	
@@ -45,8 +51,8 @@ public class ElementNode extends SchemaGraphNode {
 	 * 
 	 * @return
 	 */
-	public List<SequenceNode<ElementNode>> getChildNodes() {
-		return childNodes;
+	public List<SequenceNode<ElementNode>> getElSeqNodes() {
+		return elSeqNodes;
 	}
 	
     @Override
@@ -64,12 +70,12 @@ public class ElementNode extends SchemaGraphNode {
 		ElementNode other = (ElementNode) obj;
 		return 
 			elName.equals(other.elName) &&
-			childNodes.equals(other.childNodes);
+			elSeqNodes.equals(other.elSeqNodes);
 	}
 	
 	@Override
 	public int hashCode() {
-		return elName.hashCode() + childNodes.hashCode();
+		return elName.hashCode() + elSeqNodes.hashCode();
 	}
 	
 	@Override

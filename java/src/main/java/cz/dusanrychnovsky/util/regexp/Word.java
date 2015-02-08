@@ -6,6 +6,11 @@ import static java.util.Collections.unmodifiableList;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Dušan Rychnovský
+ *
+ */
 public class Word {
 
 	private ArrayList<String> symbols;

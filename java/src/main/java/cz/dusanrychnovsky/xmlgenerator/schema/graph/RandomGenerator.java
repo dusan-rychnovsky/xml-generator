@@ -43,12 +43,12 @@ public class RandomGenerator extends DocumentGenerator {
 		
 		Element result = new Element(elNode.getElName());
 		
-		SequenceNode<ElementNode> rndSeqNode = rndItem(elNode.getChildNodes(), rnd);
+		SequenceNode<ElementNode> rndSeqNode = rndItem(elNode.getElSeqNodes(), rnd);
 		for (ElementNode subElNode : rndSeqNode.getChildNodes()) {
 			result.addContent(buildElement(subElNode));
 		}
 		
-		SetNode<AttributeNode> rndAttrSetNode = rndItem(elNode.getAttributesSetNodes(), rnd);
+		SetNode<AttributeNode> rndAttrSetNode = rndItem(elNode.getAttrSetNodes(), rnd);
 		for (AttributeNode attrNode : rndAttrSetNode.getChildNodes()) {
 			result.getAttributes().add(buildAttribute(attrNode));
 		}

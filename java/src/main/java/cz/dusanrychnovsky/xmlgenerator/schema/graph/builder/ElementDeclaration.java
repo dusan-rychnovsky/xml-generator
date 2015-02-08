@@ -1,4 +1,4 @@
-package cz.dusanrychnovsky.xmlgenerator.schema.graph;
+package cz.dusanrychnovsky.xmlgenerator.schema.graph.builder;
 
 import cz.dusanrychnovsky.util.regexp.Expression;
 

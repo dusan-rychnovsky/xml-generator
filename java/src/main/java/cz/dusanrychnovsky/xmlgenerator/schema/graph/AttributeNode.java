@@ -1,5 +1,11 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
+/**
+ * Represents an attribute node in a schema graph.
+ * 
+ * @author Dušan Rychnovský
+ *
+ */
 public class AttributeNode extends SchemaGraphNode {
 
 	private final String attrName;

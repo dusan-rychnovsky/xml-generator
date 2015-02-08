@@ -6,6 +6,16 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Represents a set node in a schema graph. A set node is associated with an
+ * unordered collection (a set) of child nodes.
+ * 
+ * A set node is meant to represent a set of attributes of an element node.
+ * 
+ * @author Dušan Rychnovský
+ *
+ * @param <T>
+ */
 public class SetNode<T extends SchemaGraphNode> extends SchemaGraphNode {
 	
 	private final List<T> childNodes;

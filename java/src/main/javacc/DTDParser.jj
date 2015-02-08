@@ -7,6 +7,7 @@ PARSER_BEGIN(DTDParser)
 
 	import cz.dusanrychnovsky.util.regexp.*;
 	import cz.dusanrychnovsky.xmlgenerator.schema.graph.*;
+	import cz.dusanrychnovsky.xmlgenerator.schema.graph.builder.*;
 
 	import org.apache.commons.io.FileUtils;
 	import java.io.IOException;

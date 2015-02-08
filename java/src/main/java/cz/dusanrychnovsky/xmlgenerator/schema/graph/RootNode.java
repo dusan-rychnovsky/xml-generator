@@ -1,5 +1,11 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
+/**
+ * Represents the root node of a schema graph.
+ * 
+ * @author Dušan Rychnovský
+ *
+ */
 public class RootNode extends SchemaGraphNode {
 
     private final SequenceNode<ElementNode> childNode;

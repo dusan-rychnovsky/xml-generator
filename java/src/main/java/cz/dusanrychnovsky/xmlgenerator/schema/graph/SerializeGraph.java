@@ -23,7 +23,7 @@ public class SerializeGraph extends Visitor<String> {
 		// apparently, Java does not allow to convert a List<V> to List<U>
 		// even when V extends U
 		List<SchemaGraphNode> childNodes = new ArrayList<>();
-		childNodes.addAll(elNode.getChildNodes());
+		childNodes.addAll(elNode.getElSeqNodes());
 		
 		StringBuilder builder = new StringBuilder();
 		builder.append("e(");

@@ -1,4 +1,4 @@
-package cz.dusanrychnovsky.xmlgenerator.schema.graph;
+package cz.dusanrychnovsky.xmlgenerator.schema.graph.builder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +14,12 @@ import static cz.dusanrychnovsky.util.ListUtils.fold;
 import cz.dusanrychnovsky.util.regexp.EvaluateRegexp;
 import cz.dusanrychnovsky.util.regexp.Language;
 import cz.dusanrychnovsky.util.regexp.Word;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.AttributeNode;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.ElementNode;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.RootNode;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.SequenceNode;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.SetNode;
 
 public class SchemaGraphBuilder {
 

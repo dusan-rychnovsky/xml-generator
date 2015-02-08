@@ -1,5 +1,11 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
+/**
+ * Represents a node in a schema graph.
+ * 
+ * @author Dušan Rychnovský
+ *
+ */
 public abstract class SchemaGraphNode {
 
 	/**
