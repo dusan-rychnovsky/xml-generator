@@ -16,8 +16,8 @@ import org.junit.Test;
 
 import cz.dusanrychnovsky.util.xml.DTDValidator;
 import cz.dusanrychnovsky.util.xml.Validator;
-import cz.dusanrychnovsky.xmlgenerator.schema.graph.RandomGenerator;
 import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.generators.RandomGenerator;
 
 
 public class RandomDTDCompliantDocumentsGeneratingTest

@@ -1,4 +1,4 @@
-package cz.dusanrychnovsky.xmlgenerator.schema.graph;
+package cz.dusanrychnovsky.xmlgenerator.schema.graph.generators;
 
 import java.util.List;
 import java.util.Random;
@@ -6,6 +6,13 @@ import java.util.Random;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
+
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.AttributeNode;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.ElementNode;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.RootNode;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.SchemaGraph;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.SequenceNode;
+import cz.dusanrychnovsky.xmlgenerator.schema.graph.SetNode;
 
 public class RandomGenerator extends DocumentGenerator {
 	
@@ -43,8 +50,8 @@ public class RandomGenerator extends DocumentGenerator {
 		
 		Element result = new Element(elNode.getElName());
 		
-		SequenceNode<ElementNode> rndSeqNode = rndItem(elNode.getElSeqNodes(), rnd);
-		for (ElementNode subElNode : rndSeqNode.getChildNodes()) {
+		SequenceNode<ElementNode> rndElSeqNode = rndItem(elNode.getElSeqNodes(), rnd);
+		for (ElementNode subElNode : rndElSeqNode.getChildNodes()) {
 			result.addContent(buildElement(subElNode));
 		}
 		
