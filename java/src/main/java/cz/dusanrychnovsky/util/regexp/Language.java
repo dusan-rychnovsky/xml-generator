@@ -2,48 +2,14 @@ package cz.dusanrychnovsky.util.regexp;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.unmodifiableSet;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class Language {
 
-	private final List<Word> words;
-	
-	/**
-	 * 
-	 * @param languages
-	 * @return
-	 */
-	public static Language union(List<Language> languages) {
-		
-		Set<Word> uniqueWords = new HashSet<>();
-		for (Language language : languages) {
-			for (Word word : language.words) {
-				uniqueWords.add(word);
-			}
-		}
-		
-		return new Language(new ArrayList<>(uniqueWords));
-	}
-	
-	/**
-	 * 
-	 * @param languages
-	 * @return
-	 */
-	public static Language concat(List<Language> languages) {
-		
-		Language acc = new Language(new Word());
-		for (Language language : languages) {
-			acc = acc.concatWith(language);
-		}
-		
-		return acc;
-	}
-	
+	private final Set<Word> words;
+
 	/**
 	 * 
 	 * @param words
@@ -51,15 +17,30 @@ public class Language {
 	public Language(Word... words) {
 		this(asList(words));
 	}
-	
+
 	/**
 	 * 
 	 * @param words
 	 */
-	public Language(List<Word> words) {
-		this.words = new ArrayList<>(words);
+	public Language(Collection<Word> words) {
+		this.words = new HashSet<>(words);
 	}
-	
+
+    /**
+     *
+     * @param languages
+     * @return
+     */
+    public static Language concat(List<Language> languages) {
+
+        Language acc = new Language(new Word());
+        for (Language language : languages) {
+            acc = acc.concatWith(language);
+        }
+
+        return acc;
+    }
+
 	/**
 	 * 
 	 * @param other
@@ -67,7 +48,7 @@ public class Language {
 	 */
 	public Language concatWith(Language other) {
 		
-		List<Word> words = new ArrayList<Word>();
+		Set<Word> words = new HashSet<>();
 		for (Word firstWord : this.words) {
 			for (Word secondWord : other.words) {
 				words.add(firstWord.concatWith(secondWord));
@@ -76,13 +57,30 @@ public class Language {
 		
 		return new Language(words);
 	}
-	
+
+    /**
+     *
+     * @param languages
+     * @return
+     */
+    public static Language union(Collection<Language> languages) {
+
+        Set<Word> uniqueWords = new HashSet<>();
+        for (Language language : languages) {
+            for (Word word : language.words) {
+                uniqueWords.add(word);
+            }
+        }
+
+        return new Language(uniqueWords);
+    }
+
 	/**
 	 * 
 	 * @return
 	 */
-	public List<Word> getWords() {
-		return unmodifiableList(words);
+	public Set<Word> getWords() {
+		return unmodifiableSet(words);
 	}
 	
 	@Override

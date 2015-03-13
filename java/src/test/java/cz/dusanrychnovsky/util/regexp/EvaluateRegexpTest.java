@@ -3,6 +3,7 @@ package cz.dusanrychnovsky.util.regexp;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class EvaluateRegexpTest {
 		Expression identifier = new Identifier(CAT);
 		
 		Language language = identifier.accept(evaluate);
-		List<Word> words = language.getWords();
+		Set<Word> words = language.getWords();
 		
 		assertEquals(1, words.size());
 		assertTrue(words.contains(new Word(CAT)));
@@ -43,7 +44,7 @@ public class EvaluateRegexpTest {
 		);
 		
 		Language language = union.accept(evaluate);
-		List<Word> words = language.getWords();
+		Set<Word> words = language.getWords();
 		
 		assertEquals(4, words.size());
 		assertTrue(words.contains(new Word(CAT)));
@@ -65,7 +66,7 @@ public class EvaluateRegexpTest {
 		);
 		
 		Language language = sequence.accept(evaluate);
-		List<Word> words = language.getWords();
+		Set<Word> words = language.getWords();
 		
 		assertEquals(2, words.size());
 		assertTrue(words.contains(new Word(CAT, DOG, PIG)));
@@ -84,7 +85,7 @@ public class EvaluateRegexpTest {
 		);
 		
 		Language language = iteration.accept(evaluate);
-		List<Word> words = language.getWords();
+		Set<Word> words = language.getWords();
 		
 		assertEquals(7, words.size());
 	}
