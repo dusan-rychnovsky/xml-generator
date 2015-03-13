@@ -1,16 +1,14 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph.builder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.collections15.MultiMap;
 import org.apache.commons.collections15.multimap.MultiHashMap;
 
 import static cz.dusanrychnovsky.util.ListUtils.map;
 import static cz.dusanrychnovsky.util.ListUtils.fold;
+import static java.util.Arrays.asList;
+
 import cz.dusanrychnovsky.util.regexp.EvaluateRegexp;
 import cz.dusanrychnovsky.util.regexp.Language;
 import cz.dusanrychnovsky.util.regexp.Word;
@@ -23,7 +21,7 @@ import cz.dusanrychnovsky.xmlgenerator.schema.graph.SetNode;
 
 /**
  * 
- * @author Dušan Rychnovský
+ * @author Duï¿½an Rychnovskï¿½
  *
  */
 public class SchemaGraphBuilder {
@@ -68,7 +66,14 @@ public class SchemaGraphBuilder {
      * @param rootElName
      */
     public void setRootElement(String rootElName) {
-    	this.rootElName = rootElName;
+
+        if (this.rootElName != null) {
+            throw new IllegalStateException(
+                "Root element already declared [" + rootElName + "]."
+            );
+        }
+
+        this.rootElName = rootElName;
     }
     
     /**
@@ -84,9 +89,7 @@ public class SchemaGraphBuilder {
      * @param attrDecls
      */
     public void addDeclarations(List<AttributeDeclaration> attrDecls) {
-    	for (AttributeDeclaration attrDecl : attrDecls) {
-    		addDeclaration(attrDecl);
-    	}
+    	attrDecls.forEach(attrDecl -> addDeclaration(attrDecl));
     }
     
     /**
@@ -95,7 +98,7 @@ public class SchemaGraphBuilder {
      * @return
      */
     private List<AttributeDeclaration> getAttrDeclarations(String elName) {
-    	
+
     	if (!attrDecls.containsKey(elName)) {
     		return new ArrayList<>();
     	}
@@ -154,7 +157,7 @@ public class SchemaGraphBuilder {
 		
 		return fold(
 			attrDecls,
-			Arrays.asList(new SetNode<>()),
+			asList(new SetNode<>()),
 			(acc, attrDecl) -> {
 				
 				List<SetNode<AttributeNode>> result = new ArrayList<>();
@@ -170,7 +173,7 @@ public class SchemaGraphBuilder {
 					nodes.addAll(item.getChildNodes());
 					nodes.add(attrNode);
 					
-					result.add(new SetNode<AttributeNode>(nodes));
+					result.add(new SetNode<>(nodes));
 				}
 				
 				return result;
@@ -180,7 +183,7 @@ public class SchemaGraphBuilder {
 
 	/**
 	 * 
-	 * @param elDecl.getExpr()
+	 * @param elDecl
 	 * @return
 	 */
 	private List<SequenceNode<ElementNode>> buildSequenceNodes(ElementDeclaration elDecl) {
@@ -188,16 +191,17 @@ public class SchemaGraphBuilder {
 		List<SequenceNode<ElementNode>> result = new ArrayList<>();
 		
 		Language language = elDecl.getExpr().accept(evaluate);
-		for (Word word : language.getWords()) {
-			result.add(
-				new SequenceNode<>(
-					map(
-						word.getSymbols(),
-						s -> buildElementNode(s)
-					)
-				)
-			);
-		}
+        language.getWords().forEach(
+            word ->
+			    result.add(
+                    new SequenceNode<>(
+                        map(
+                            word.getSymbols(),
+                            s -> buildElementNode(s)
+                        )
+                    )
+                )
+        );
 		
 		return result;
 	}
@@ -208,5 +212,6 @@ public class SchemaGraphBuilder {
     public void clear() {
     	rootElName = null;
     	elDecls.clear();
+        attrDecls.clear();
     }
 }

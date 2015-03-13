@@ -3,6 +3,8 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 public abstract class Visitor<T> {
 	
 	/**
@@ -53,13 +55,10 @@ public abstract class Visitor<T> {
 	 * @return
 	 */
 	protected List<T> visit(List<SchemaGraphNode> nodes) {
-		
-		List<T> result = new ArrayList<T>();
-		
-		for (SchemaGraphNode node : nodes) {
-			result.add(node.accept(this));
-		}
-		
-		return result;
+		return
+            nodes
+                .stream()
+                .map(node -> node.accept(this))
+                .collect(toList());
 	}
 }
