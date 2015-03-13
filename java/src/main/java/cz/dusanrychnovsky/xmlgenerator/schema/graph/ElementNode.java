@@ -1,19 +1,25 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
+import lombok.Data;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static java.util.Collections.unmodifiableList;
 
 /**
  * Represents an element node in a schema graph.
  * 
- * @author Dušan Rychnovský
+ * @author Duï¿½an Rychnovskï¿½
  *
  */
-public class ElementNode extends SchemaGraphNode {
+@Data
+public class ElementNode implements SchemaGraphNode {
 	
 	private final String elName;
-	private final List<SetNode<AttributeNode>> attrSetNodes;
-	private final List<SequenceNode<ElementNode>> elSeqNodes;
+	private final List<SetNode<AttributeNode>> attrSetNodes = new ArrayList<>();
+	private final List<SequenceNode<ElementNode>> elSeqNodes = new ArrayList<>();
 	
 	/**
 	 * 
@@ -27,24 +33,16 @@ public class ElementNode extends SchemaGraphNode {
 		List<SequenceNode<ElementNode>> elSeqNodes) {
 		
 		this.elName = elName;
-		this.attrSetNodes = new ArrayList<>(attrSetNodes);
-		this.elSeqNodes = new ArrayList<>(elSeqNodes);
+        attrSetNodes.forEach(setNode -> this.attrSetNodes.add(setNode));
+        elSeqNodes.forEach(seqNode -> this.elSeqNodes.add(seqNode));
 	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public String getElName() {
-		return elName;
-	}
-	
-	/**
-	 * 
-	 * @return
-	 */
 	public List<SetNode<AttributeNode>> getAttrSetNodes() {
-		return attrSetNodes;
+		return unmodifiableList(attrSetNodes);
 	}
 	
 	/**
@@ -52,34 +50,11 @@ public class ElementNode extends SchemaGraphNode {
 	 * @return
 	 */
 	public List<SequenceNode<ElementNode>> getElSeqNodes() {
-		return elSeqNodes;
+		return unmodifiableList(elSeqNodes);
 	}
 	
     @Override
     public <T> T accept(Visitor<T> visitor) {
     	return visitor.visit(this);
     }
-    
-	@Override
-	public boolean equals(Object obj) {
-		
-		if (!(obj instanceof ElementNode)) {
-			return false;
-		}
-		
-		ElementNode other = (ElementNode) obj;
-		return 
-			elName.equals(other.elName) &&
-			elSeqNodes.equals(other.elSeqNodes);
-	}
-	
-	@Override
-	public int hashCode() {
-		return elName.hashCode() + elSeqNodes.hashCode();
-	}
-	
-	@Override
-	public String toString() {
-		return "e(" + elName + ")";
-	}
 }

@@ -1,12 +1,15 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
+import lombok.Data;
+
 /**
  * Represents the root node of a schema graph.
  * 
- * @author Dušan Rychnovský
+ * @author Duï¿½an Rychnovskï¿½
  *
  */
-public class RootNode extends SchemaGraphNode {
+@Data
+public class RootNode implements SchemaGraphNode {
 
     private final SequenceNode<ElementNode> childNode;
     
@@ -18,21 +21,8 @@ public class RootNode extends SchemaGraphNode {
     	this.childNode = new SequenceNode<>(rootElNode);
     }
 
-    /**
-     * 
-     * @return
-     */
-	public SequenceNode<ElementNode> getChildNode() {
-		return childNode;
-	}
-	
     @Override
     public <T> T accept(Visitor<T> visitor) {
     	return visitor.visit(this);
-    }
-    
-    @Override
-    public String toString() {
-        return "r()";
     }
 }

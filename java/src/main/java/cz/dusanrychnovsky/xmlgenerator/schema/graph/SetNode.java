@@ -2,9 +2,14 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
 /**
  * Represents a set node in a schema graph. A set node is associated with an
@@ -12,28 +17,29 @@ import org.apache.commons.lang3.StringUtils;
  * 
  * A set node is meant to represent a set of attributes of an element node.
  * 
- * @author Dušan Rychnovský
+ * @author Duï¿½an Rychnovskï¿½
  *
  * @param <T>
  */
-public class SetNode<T extends SchemaGraphNode> extends SchemaGraphNode {
+@Data
+public class SetNode<T extends SchemaGraphNode> implements SchemaGraphNode {
 	
-	private final List<T> childNodes;
-	
+	private final List<T> childNodes = new ArrayList<>();
+
+    /**
+     *
+     * @param childNodes
+     */
+    public SetNode(List<T> childNodes) {
+        childNodes.forEach(childNode -> this.childNodes.add(childNode));
+    }
+
 	/**
 	 * 
 	 * @param childNodes
 	 */
 	public SetNode(T... childNodes) {
-		this(Arrays.asList(childNodes));
-	}
-	
-	/**
-	 * 
-	 * @param childNodes
-	 */
-	public SetNode(List<T> childNodes) {
-		this.childNodes = new ArrayList<>(childNodes);
+		this(asList(childNodes));
 	}
 
 	/**
@@ -41,32 +47,11 @@ public class SetNode<T extends SchemaGraphNode> extends SchemaGraphNode {
 	 * @return
 	 */
 	public List<T> getChildNodes() {
-		return childNodes;
+		return unmodifiableList(childNodes);
 	}
 	
     @Override
     public <T> T accept(Visitor<T> visitor) {
     	return visitor.visit(this);
     }
-    
-	@Override
-	public boolean equals(Object obj) {
-		
-		if (!(obj instanceof SetNode)) {
-			return false;
-		}
-		
-		SetNode<T> other = (SetNode<T>) obj;
-		return childNodes.equals(other.childNodes);
-	}
-	
-	@Override
-	public int hashCode() {
-		return childNodes.hashCode();
-	}
-	
-	@Override
-	public String toString() {
-		return "attrs(" + StringUtils.join(childNodes, ", ") + ")";
-	}
 }
