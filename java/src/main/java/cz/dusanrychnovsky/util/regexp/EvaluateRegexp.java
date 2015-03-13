@@ -1,5 +1,7 @@
 package cz.dusanrychnovsky.util.regexp;
 
+import static cz.dusanrychnovsky.util.regexp.Language.concat;
+import static cz.dusanrychnovsky.util.regexp.Language.union;
 import static java.util.Collections.nCopies;
 
 import java.util.ArrayList;
@@ -14,12 +16,12 @@ public class EvaluateRegexp extends Visitor<Language> {
 
 	@Override
 	public Language visit(Union union) {
-		return Language.union(visit(union.getSubExprs()));
+		return union(visit(union.getSubExprs()));
 	}
 
 	@Override
 	public Language visit(Sequence sequence) {
-		return Language.concat(visit(sequence.getSubExprs()));
+		return concat(visit(sequence.getSubExprs()));
 	}
 
 	@Override
@@ -27,11 +29,11 @@ public class EvaluateRegexp extends Visitor<Language> {
 		
 		Language subResult = iteration.getSubExpr().accept(this);
 
-		List<Language> languages = new ArrayList<Language>();
+		List<Language> languages = new ArrayList<>();
 		for (int c = iteration.getMin(); c <= iteration.getMax(); c++) {
-			languages.add(Language.concat(nCopies(c, subResult)));
+			languages.add(concat(nCopies(c, subResult)));
 		}
 		
-		return Language.union(languages);
+		return union(languages);
 	}
 }

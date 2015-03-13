@@ -85,6 +85,6 @@ public class Language {
 	
 	@Override
 	public String toString() {
-		return "LANG" + words;
+		return "LANG [" + words + "]";
 	}
 }

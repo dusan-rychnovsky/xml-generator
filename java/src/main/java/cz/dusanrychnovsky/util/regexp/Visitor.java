@@ -2,6 +2,9 @@ package cz.dusanrychnovsky.util.regexp;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public abstract class Visitor<T> {
 
@@ -39,13 +42,10 @@ public abstract class Visitor<T> {
 	 * @return
 	 */
 	protected List<T> visit(List<Expression> exprs) {
-		
-		List<T> result = new ArrayList<T>();
-		
-		for (Expression expr : exprs) {
-			result.add(expr.accept(this));
-		}
-		
-		return result;
+        return
+            exprs
+                .stream()
+                .map(expr -> expr.accept(this))
+                .collect(toList());
 	}
 }

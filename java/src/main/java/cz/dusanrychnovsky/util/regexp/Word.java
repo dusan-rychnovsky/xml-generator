@@ -8,12 +8,12 @@ import java.util.List;
 
 /**
  * 
- * @author Dušan Rychnovský
+ * @author Duï¿½an Rychnovskï¿½
  *
  */
 public class Word {
 
-	private ArrayList<String> symbols;
+	private List<String> symbols;
 	
 	/**
 	 * 
@@ -38,7 +38,7 @@ public class Word {
 	 */
 	public Word concatWith(Word other) {
 
-		List<String> symbols = new ArrayList<String>();
+		List<String> symbols = new ArrayList<>();
 		symbols.addAll(this.symbols);
 		symbols.addAll(other.symbols);
 		
@@ -71,6 +71,6 @@ public class Word {
 	
 	@Override
 	public String toString() {
-		return "WORD" + symbols;
+		return "WORD [" + symbols + "]";
 	}
 }
