@@ -1,14 +1,17 @@
 package cz.dusanrychnovsky.util.regexp;
 
+import lombok.Data;
+
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableSet;
 
 import java.util.*;
 
+@Data
 public class Language {
 
-	private final Set<Word> words;
+	private final Set<Word> words = new HashSet<>();
 
 	/**
 	 * 
@@ -23,7 +26,7 @@ public class Language {
 	 * @param words
 	 */
 	public Language(Collection<Word> words) {
-		this.words = new HashSet<>(words);
+		words.forEach(word -> this.words.add(word));
 	}
 
     /**
@@ -81,10 +84,5 @@ public class Language {
 	 */
 	public Set<Word> getWords() {
 		return unmodifiableSet(words);
-	}
-	
-	@Override
-	public String toString() {
-		return "LANG [" + words + "]";
 	}
 }
