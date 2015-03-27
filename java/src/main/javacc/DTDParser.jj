@@ -16,6 +16,8 @@ PARSER_BEGIN(DTDParser)
 	import java.io.StringReader;
 	import java.util.List;
 	import java.util.ArrayList;
+	import java.util.Set;
+	import java.util.HashSet;
 	
 	public class DTDParser extends SchemaParser
 	{
@@ -85,34 +87,35 @@ SchemaGraph Schema() : { ElementDeclaration elDecl; List<AttributeDeclaration> a
 	{ return builder.getResult(); }
 }
 
-ElementDeclaration ElDeclaration() : { Token t; Expression expr; }
+ElementDeclaration ElDeclaration() : { Token t; ElementDeclaration result; }
 {
 	<EL_DECL_START>
 	
 	t = <IDENTIFIER>
 	{ String elName = t.image; }
 	
-	expr = ElContent()
+	result = ElContent(elName)
 	
 	<DECL_END>
 	
-	{ return new ElementDeclaration(elName, expr); }
+	{ return result; }
 }
 
-Expression ElContent() : { Expression expr; }
+ElementDeclaration ElContent(String elName) : { Expression expr; ElementDeclaration result; }
 {
 	<OPEN_PAR>
 	
 	(
 		<PCDATA>
-		{ expr = new Sequence(); }
+		{ result = new ElementDeclaration(elName, new StringContent(), new Sequence()); }
 	|
 		expr = REGEXP()
+		{ result = new ElementDeclaration(elName, new EmptyContent(), expr); }
 	)
 	
 	<CLOSE_PAR>
 	
-	{ return expr; }
+	{ return result; }
 }
 
 Expression REGEXP() : { Expression result; Expression subExpr; }
@@ -182,7 +185,7 @@ Expression BASE() : { Expression result; Token t; }
 	{ return result; }
 }
 
-List<AttributeDeclaration> AttlistDeclaration() : { Token t; boolean required; }
+List<AttributeDeclaration> AttlistDeclaration() : { Token t; ContentType contentType; AttributeDeclaration attrDecl; }
 {
 	{ List<AttributeDeclaration> result = new ArrayList<AttributeDeclaration>(); }
 	
@@ -195,10 +198,11 @@ List<AttributeDeclaration> AttlistDeclaration() : { Token t; boolean required; }
 		t = <IDENTIFIER>
 		{ String attrName = t.image; }
 		
-		<CDATA>	
-		required = required()
+		contentType = AttrContent()
 		
-		{ result.add(new AttributeDeclaration(elName, attrName, required)); }
+		attrDecl = AttrDefaultValues(elName, attrName, contentType)
+		
+		{ result.add(attrDecl); }
 	)+
 	
 	<DECL_END>
@@ -206,27 +210,59 @@ List<AttributeDeclaration> AttlistDeclaration() : { Token t; boolean required; }
 	{ return result; }
 }
 
-boolean required() : { Token t; }
+ContentType AttrContent() : { Token t; ContentType result; }
+{
+	(
+		<CDATA>
+		{ result = new StringContent(); }
+	|
+		<OPEN_PAR>
+		
+		{ Set<String> values = new HashSet<String>(); }
+		
+		t = <IDENTIFIER>
+		{ values.add(t.image); }
+		
+		(
+			<PIPE>
+			
+			t = <IDENTIFIER>
+			{ values.add(t.image); }
+		)*
+		
+		{ result = new EnumContent(values); }
+		
+		<CLOSE_PAR>
+	)
+	
+	{ return result; }
+}
+
+AttributeDeclaration AttrDefaultValues(String elName, String attrName, ContentType contentType) : { Token t; boolean required; }
 {
 	(
 		<FLAG_REQUIRED>
-		{ return true; }
+		{ required = true; }
 	|
 		<FLAG_IMPLIED>
-		{ return false; }
-	|
-		// TODO: there's likely no such keyword in DTD (i.e. #DEFAULT)
-		<FLAG_DEFAULT>
-		<QUOTE>
-		t = <IDENTIFIER>
-		<QUOTE>
-		{ return false; }
+		{ required = false; }
 	|
 		<FLAG_FIXED>
 		
 		<QUOTE>
 		t = <IDENTIFIER>
 		<QUOTE>
-		{ return false; }
+		
+		// TODO: validate that the original content type contains the default value
+		{ contentType = new EnumContent(t.image); }
+		{ required = false; }
+	|
+		<QUOTE>
+		t = <IDENTIFIER>
+		<QUOTE>
+		
+		{ required = false; }		
 	)
+	
+	{ return new AttributeDeclaration(elName, attrName, contentType, required); }
 }

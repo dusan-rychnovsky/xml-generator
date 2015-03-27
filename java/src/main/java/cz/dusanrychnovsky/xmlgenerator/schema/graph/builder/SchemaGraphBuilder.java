@@ -144,7 +144,7 @@ public class SchemaGraphBuilder {
 		List<AttributeDeclaration> attrDecls = getAttrDeclarations(elName);
 		List<SetNode<AttributeNode>> attrSetNodes = buildAttrSetNodes(attrDecls);
 		
-		return new ElementNode(elName, attrSetNodes, seqNodes);
+		return new ElementNode(elName, elDecl.getContentType(), attrSetNodes, seqNodes);
 	}
 	
 	/**
@@ -161,7 +161,7 @@ public class SchemaGraphBuilder {
 			(acc, attrDecl) -> {
 				
 				List<SetNode<AttributeNode>> result = new ArrayList<>();
-				AttributeNode attrNode = new AttributeNode(attrDecl.getAttrName());
+				AttributeNode attrNode = new AttributeNode(attrDecl.getAttrName(), attrDecl.getContentType());
 				
 				for (SetNode<AttributeNode> item : acc) {
 					

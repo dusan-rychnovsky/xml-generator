@@ -12,6 +12,7 @@ import lombok.Value;
 public class AttributeNode implements SchemaGraphNode {
 
 	private final String attrName;
+	private final ContentType contentType;
 
 	@Override
     public <T> T accept(Visitor<T> visitor) {

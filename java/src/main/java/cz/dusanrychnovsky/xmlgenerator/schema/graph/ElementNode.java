@@ -3,7 +3,6 @@ package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 import lombok.Value;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
@@ -18,6 +17,7 @@ import static java.util.Collections.unmodifiableList;
 public class ElementNode implements SchemaGraphNode {
 	
 	private final String elName;
+	private final ContentType contentType;
 	private final List<SetNode<AttributeNode>> attrSetNodes = new ArrayList<>();
 	private final List<SequenceNode<ElementNode>> elSeqNodes = new ArrayList<>();
 	
@@ -28,11 +28,13 @@ public class ElementNode implements SchemaGraphNode {
 	 * @param elSeqNodes
 	 */
 	public ElementNode(
-		String elName, 
+		String elName,
+		ContentType contentType,
 		List<SetNode<AttributeNode>> attrSetNodes, 
 		List<SequenceNode<ElementNode>> elSeqNodes) {
 		
 		this.elName = elName;
+		this.contentType = contentType;
         attrSetNodes.forEach(setNode -> this.attrSetNodes.add(setNode));
         elSeqNodes.forEach(seqNode -> this.elSeqNodes.add(seqNode));
 	}
