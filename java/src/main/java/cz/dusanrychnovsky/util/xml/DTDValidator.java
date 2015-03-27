@@ -19,10 +19,12 @@ public class DTDValidator extends Validator {
 	
 	@Override
 	public boolean isValid(Document doc, File schemaFile) {
-		
+
+		// prevent the original document from being modified
+		doc = doc.clone();
+
 		String rootElName = doc.getRootElement().getName();
-		
-		// TODO: we don't want to modify the original doc here
+
 		DocType docType = new DocType(rootElName, "file:////" + schemaFile.getPath());
 		doc.setDocType(docType);
 		
