@@ -18,6 +18,7 @@ public class RandomGenerator extends DocumentGenerator {
 	
 	private final Random rnd = new Random();
 	private final SchemaGraph schemaGraph;
+	private final RandomValueGenerator valueGenerator = new RandomValueGenerator();
 	
 	/**
 	 * 
@@ -49,7 +50,10 @@ public class RandomGenerator extends DocumentGenerator {
 	private Element buildElement(ElementNode elNode) {
 		
 		Element result = new Element(elNode.getElName());
-		
+
+		String text = valueGenerator.get(elNode.getContentType());
+		result.setText(text);
+
 		SequenceNode<ElementNode> rndElSeqNode = rndItem(elNode.getElSeqNodes(), rnd);
         rndElSeqNode.getChildNodes().forEach(
             subElNode -> result.addContent(buildElement(subElNode))
@@ -69,7 +73,9 @@ public class RandomGenerator extends DocumentGenerator {
 	 * @return
 	 */
 	private Attribute buildAttribute(AttributeNode attrNode) {
-		return new Attribute(attrNode.getAttrName(), "");
+
+		String value = valueGenerator.get(attrNode.getContentType());
+		return new Attribute(attrNode.getAttrName(), value);
 	}
 	
 	/**

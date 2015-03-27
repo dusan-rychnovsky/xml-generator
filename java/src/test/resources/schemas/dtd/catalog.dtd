@@ -3,10 +3,10 @@
 <!ELEMENT product (options?,price+,notes?)>
 <!ATTLIST product 
 	name CDATA #IMPLIED
-	category CDATA #IMPLIED
+	category (HandTool|Table|Shop-Professional) "HandTool"
 	partnum CDATA #IMPLIED
-	plant CDATA #IMPLIED
-	inventory CDATA #IMPLIED>
+	plant (Pittsburgh|Milwaukee|Chicago) "Chicago"
+	inventory (InStock|Backordered|Discontinued) "InStock">
 
 <!ELEMENT specifications (#PCDATA)>
 <!ATTLIST specifications
@@ -15,9 +15,9 @@
 
 <!ELEMENT options (#PCDATA)>
 <!ATTLIST options
-	finish CDATA #IMPLIED
-	adapter CDATA #IMPLIED
-	case CDATA #IMPLIED>
+	finish (Metal|Polished|Matte) "Matte"
+	adapter (Included|Optional|NotApplicable) "Included"
+	case (HardShell|Soft|NotApplicable) "HardShell">
 
 <!ELEMENT price (#PCDATA)>
 <!ATTLIST price
