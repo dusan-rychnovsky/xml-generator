@@ -1,8 +1,8 @@
 package cz.dusanrychnovsky.util.regexp;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class Iteration extends Expression {
 
     private final int min;

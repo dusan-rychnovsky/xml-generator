@@ -1,8 +1,8 @@
 package cz.dusanrychnovsky.util.regexp;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class Identifier extends Expression {
 
     private final String symbol;

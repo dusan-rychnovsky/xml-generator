@@ -1,6 +1,6 @@
 package cz.dusanrychnovsky.util.regexp;
 
-import lombok.Data;
+import lombok.Value;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
@@ -8,7 +8,7 @@ import static java.util.Collections.unmodifiableSet;
 
 import java.util.*;
 
-@Data
+@Value
 public class Language {
 
 	private final Set<Word> words = new HashSet<>();

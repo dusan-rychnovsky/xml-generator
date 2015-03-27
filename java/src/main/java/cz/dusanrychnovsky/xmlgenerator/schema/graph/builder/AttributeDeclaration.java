@@ -1,8 +1,8 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph.builder;
 
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class AttributeDeclaration {
 	
 	private final String elName;

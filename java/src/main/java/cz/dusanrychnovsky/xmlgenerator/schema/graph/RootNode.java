@@ -1,6 +1,6 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
-import lombok.Data;
+import lombok.Value;
 
 /**
  * Represents the root node of a schema graph.
@@ -8,7 +8,7 @@ import lombok.Data;
  * @author Du�an Rychnovsk�
  *
  */
-@Data
+@Value
 public class RootNode implements SchemaGraphNode {
 
     private final SequenceNode<ElementNode> childNode;

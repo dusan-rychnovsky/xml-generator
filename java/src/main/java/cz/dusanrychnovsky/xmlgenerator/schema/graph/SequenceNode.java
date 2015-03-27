@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Value;
 import org.apache.commons.lang3.StringUtils;
 
 import static java.util.Arrays.asList;
@@ -21,6 +22,7 @@ import static java.util.Collections.unmodifiableList;
  *
  * @param <T>
  */
+@Value
 public class SequenceNode<T extends SchemaGraphNode> implements SchemaGraphNode {
 	
 	private final List<T> childNodes = new ArrayList<>();

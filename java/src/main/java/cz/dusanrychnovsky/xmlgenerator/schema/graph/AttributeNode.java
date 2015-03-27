@@ -1,6 +1,6 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
-import lombok.Data;
+import lombok.Value;
 
 /**
  * Represents an attribute node in a schema graph.
@@ -8,7 +8,7 @@ import lombok.Data;
  * @author Du�an Rychnovsk�
  *
  */
-@Data
+@Value
 public class AttributeNode implements SchemaGraphNode {
 
 	private final String attrName;

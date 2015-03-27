@@ -1,6 +1,6 @@
 package cz.dusanrychnovsky.util.regexp;
 
-import lombok.Data;
+import lombok.Value;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author Du�an Rychnovsk�
  *
  */
-@Data
+@Value
 public class Word {
 
 	private final List<String> symbols = new ArrayList<>();

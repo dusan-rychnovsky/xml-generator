@@ -1,6 +1,6 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph;
 
-import lombok.Data;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +14,7 @@ import static java.util.Collections.unmodifiableList;
  * @author Du�an Rychnovsk�
  *
  */
-@Data
+@Value
 public class ElementNode implements SchemaGraphNode {
 	
 	private final String elName;

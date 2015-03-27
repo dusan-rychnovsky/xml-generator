@@ -1,6 +1,6 @@
 package cz.dusanrychnovsky.util.regexp;
 
-import lombok.Data;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 
-@Data
+@Value
 public class Sequence extends Expression {
 
     private final List<Expression> subExprs = new ArrayList<>();

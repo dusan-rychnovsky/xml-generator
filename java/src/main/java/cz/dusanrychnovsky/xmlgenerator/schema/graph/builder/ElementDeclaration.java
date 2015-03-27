@@ -1,9 +1,9 @@
 package cz.dusanrychnovsky.xmlgenerator.schema.graph.builder;
 
 import cz.dusanrychnovsky.util.regexp.Expression;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 public class ElementDeclaration {
 
 	private final String elName;
